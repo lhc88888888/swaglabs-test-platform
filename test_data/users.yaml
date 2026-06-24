@@ -1,0 +1,13 @@
+login_users:
+  - username: "standard_user"
+    password: "secret_sauce"
+    expected_result: "success"
+    description: "标准用户登录"
+  - username: "locked_out_user"
+    password: "secret_sauce"
+    expected_result: "locked"
+    description: "锁定用户登录"
+  - username: "problem_user"
+    password: "secret_sauce"
+    expected_result: "success"
+    description: "问题用户登录"

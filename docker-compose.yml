@@ -1,0 +1,10 @@
+services:
+  tests:
+    build: .
+    volumes:
+      - ./allure-results:/app/allure-results   # 挂载报告到宿主机
+      - ./traces:/app/traces                   # 挂载 trace 到宿主机
+    environment:
+      - CI=true                                # 强制无头模式
+    command: >
+      sh -c "pytest -s && echo '测试完成，报告已生成在 allure-results/'"

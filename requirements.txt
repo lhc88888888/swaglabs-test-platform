@@ -1,0 +1,8 @@
+playwright
+pytest
+pytest-playwright
+pytest-xdist
+pytest-asyncio
+allure-pytest
+pyyaml
+requests

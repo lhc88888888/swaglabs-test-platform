@@ -1,0 +1,51 @@
+name: Swag Labs UI Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: '0 2 * * *'          # 每天凌晨 2 点自动回归
+  workflow_dispatch:              # 支持手动触发
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 拉取代码
+        uses: actions/checkout@v4
+
+      - name: 安装 Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 安装依赖
+        run: pip install -r requirements.txt
+
+      - name: 安装 Playwright 浏览器
+        run: |
+          playwright install-deps chromium
+          playwright install chromium
+
+      - name: 运行测试
+        env:
+          CI: true
+        run: pytest -s --alluredir=allure-results
+        continue-on-error: true    # 即使测试失败也继续上传报告
+
+      - name: 上传 Allure 报告
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results
+          path: allure-results
+
+      - name: 上传 Trace 文件
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: traces
+          path: traces
